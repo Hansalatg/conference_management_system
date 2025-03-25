@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceedings Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+body {
+            font-family: Arial, sans-serif;
+            background-image: url('./assets/bg1.jpeg ');
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #4b0082; /* Indigo purple */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    height: auto;
+    overflow-y: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #f3e5f5; /* Light purple background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(75, 0, 130, 0.2); /* Soft purple shadow */
+}
+
+form input, form textarea, form button {
+    margin-bottom: 5px;
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #9c27b0; /* Purple border */
+}
+
+form input[type="file"] {
+    padding: 4px;
+}
+
+/* Button styling */
+form button {
+    background-color: #6a0dad; /* Dark purple */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #4b0082; /* Indigo purple on hover */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table, th, td {
+    border: 1px solid #d1c4e9; /* Light purple border */
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #e1bee7; /* Light purple header */
+    color: #4b0082; /* Indigo purple text */
+}
+
+td a {
+    color: #6a0dad; /* Dark purple link */
+    text-decoration: none;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+/* Actions column */
+td.proceeding-actions {
+    width: 250px;
+    text-align: center;
+}
+
+.proceeding-actions button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    background-color: #7b1fa2; /* Medium purple */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.proceeding-actions button:hover {
+    background-color: #4b0082; /* Indigo purple on hover */
+}
+
+
+</style>
+<body>
+    <div class="container">
+        <h1>Add Proceedings</h1>
+
+        <!-- Upload Form -->
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="text" id="title" name="title" placeholder="Enter Title" required><br>
+            <textarea id="description" name="description" placeholder="Enter Description" required></textarea><br>
+            <input type="number" id="session_id" name="session_id" placeholder="Enter Session ID" required>
+            <input type="file" id="file" name="file" accept=".pdf,.ppt,.doc" required><br>
+            <button type="submit">Upload Proceedings</button>
+        </form>
+
+        <!-- Display Uploaded Proceedings in Table -->
+        <h2>Available Proceedings</h2>
+        <table id="proceedings-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Session</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="proceedings-list"></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const proceedingsList = document.getElementById("proceedings-list");
+            const uploadForm = document.getElementById("uploadForm");
+
+            async function fetchProceedings() {
+                try {
+                    const response = await fetch("http://localhost:3000/proceedings");
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    proceedingsList.innerHTML = "";
+                    if (data.length === 0) {
+                        proceedingsList.innerHTML = "<tr><td colspan='4'>No proceedings found.</td></tr>";
+                        return;
+                    }
+                    data.forEach((item) => {
+                        proceedingsList.innerHTML += `
+                            <tr>
+                                <td>${item.title}</td>
+                                <td>${item.description}</td>
+                                <td>${item.session_id}</td>
+                                <td class="proceeding-actions">
+                                    <a href="http://localhost:3000${item.file_path}" target="_blank" download>Download</a>
+                                    <button data-id="${item.id}">Delete</button>
+                                    <button data-id="${item.id}" data-title="${item.title}" data-description="${item.description}" data-session="${item.session_id}">Edit</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    proceedingsList.innerHTML = "<tr><td colspan='4'>Error loading proceedings.</td></tr>";
+                }
+            }
+
+            async function handleFormSubmit(event) {
+                event.preventDefault();
+
+                const formData = new FormData(uploadForm);
+                try {
+                    const response = await fetch("http://localhost:3000/upload", {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        alert("Failed to upload file.");
+                        return;
+                    }
+                    alert("Proceeding uploaded successfully!");
+                    fetchProceedings();
+                } catch (error) {
+                    console.error("Error uploading file:", error);
+                    alert("Error uploading the file.");
+                }
+            }
+
+            uploadForm.addEventListener("submit", handleFormSubmit);
+
+            async function deleteProceeding(id) {
+                if (!confirm("Are you sure you want to delete this proceeding?")) return;
+                try {
+                    const response = await fetch(`http://localhost:3000/proceedings/${id}`, {
+                        method: "DELETE",
+                    });
+                    if (response.ok) {
+                        alert("Proceeding deleted successfully!");
+                        fetchProceedings();
+                    } else {
+                        alert("Failed to delete proceeding.");
+                    }
+                } catch (error) {
+                    console.error("Error deleting proceeding:", error);
+                }
+            }
+
+            function editProceeding(id, title, description, session_id) {
+                const newTitle = prompt("Enter new title:", title);
+                const newDescription = prompt("Enter new description:", description);
+                const newSession = prompt("Enter new session id:", session_id);
+
+                if (newTitle && newDescription && newSession) {
+                    updateProceeding(id, newTitle, newDescription, newSession);
+                }
+            }
+
+            async function updateProceeding(id, title, description, session_id) {
+                try {
+                    const response = await fetch(`http://localhost:3000/proceedings/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ title, description, session_id }),
+                    });
+                    if (response.ok) {
+                        alert("Proceeding updated successfully!");
+                        fetchProceedings();
+                    } else {
+                        alert("Failed to update proceeding.");
+                    }
+                } catch (error) {
+                    console.error("Error updating proceeding:", error);
+                }
+            }
+
+            document.addEventListener("click", (event) => {
+                if (event.target.matches("button")) {
+                    const button = event.target;
+                    if (button.textContent === "Delete") {
+                        const id = button.getAttribute("data-id");
+                        deleteProceeding(id);
+                    } else if (button.textContent === "Edit") {
+                        const id = button.getAttribute("data-id");
+                        const title = button.getAttribute("data-title");
+                        const description = button.getAttribute("data-description");
+                        const session_id = button.getAttribute("data-session");
+                        editProceeding(id, title, description, session_id);
+                    }
+                }
+            });
+
+            fetchProceedings(); // Initial fetch
+        });
+    </script>
+</body>
+</html>

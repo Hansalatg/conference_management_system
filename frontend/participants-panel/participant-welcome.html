@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Welcome Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"> <!-- Google font -->
+</head>
+<style>
+    /* Universal Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/bg4.jpg');
+    background-size: cover;
+    color: white;
+    background-position: center;
+    height: 100vh; 
+    margin: 0;
+    padding: 0; /* White text color */
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #6a1b9a; /* Purple background */
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: center; /* Center navbar items */
+}
+
+.nav-list li {
+    margin: 0 25px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: white; /* White text color */
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-list a:hover {
+    color: #ff4081; /* Pinkish color on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Content Styling */
+.content {
+    text-align: center;
+    margin: 80px 40px;
+}
+
+.content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #fff;
+}
+
+.content p {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+/* QR Code Section */
+#qr-code {
+    width: 180px;
+    height: 180px;
+    background-color: #333; /* Placeholder for QR Code */
+    margin: 30px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Styling */
+button {
+    background-color: #6a1b9a; /* Purple background */
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff4081; /* Pinkish color on hover */
+    transform: scale(1.1);
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #6a1b9a; /* Purple footer */
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-list li {
+        margin: 10px 0;
+    }
+
+    .content h1 {
+        font-size: 36px;
+    }
+
+    .content p {
+        font-size: 18px;
+    }
+
+    button {
+        padding: 10px 25px;
+    }
+}
+</style>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <!-- Navbar items (Links) -->
+            <li><a href="sessions.html">Sessions</a></li>
+            <li><a href="proceedings.html">Proceedings</a></li>
+            <li><a href="participant-checkinpage.html">Check-in</a></li>
+            <li><a href="participant-feedback.html">Feedback Section</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="content">
+        <h1>Welcome to the Event</h1>
+        <p>We're excited to have you join us!</p>
+       
+        <button>Proceed to Next</button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Event Organization. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

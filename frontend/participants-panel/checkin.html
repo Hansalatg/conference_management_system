@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Check-In</title>
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #reader {
+            width: 300px;
+            height: 300px;
+            margin: auto;
+            border: 1px solid #ccc;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>QR Code Check-In</h1>
+    <p>Scan your QR code to check into the session</p>
+    <div id="reader"></div>
+    <div id="result">Waiting for QR code...</div>
+
+    <script>
+        const reader = new Html5Qrcode("reader");
+
+        const sessionId = 3; // Replace with the current session ID dynamically
+
+        async function startQrScanner() {
+            try {
+                console.log("Initializing QR Code Scanner...");
+
+                // List available media devices (cameras)
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                console.log("Devices detected: ", devices);
+                
+                // Check if there's a video (camera) device
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                if (videoDevices.length === 0) {
+                    alert("No video devices found. Please ensure your camera is connected and accessible.");
+                    return;
+                }
+                
+                console.log("Video devices available: ", videoDevices);
+
+                // Start scanning using the rear camera if available
+                await reader.start(
+                    { facingMode: "environment" }, // Use rear camera
+                    {
+                        fps: 10, // Frames per second
+                        qrbox: 250 // Scanner size
+                    },
+                    async (decodedText, decodedResult) => {
+                        document.getElementById("result").innerText = `QR Code: ${decodedText}`;
+
+                        // Send the QR data and sessionId to the backend for attendance check-in
+                        try {
+                            const response = await fetch("http://localhost:3000/check-in", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ data: decodedText, sessionId })
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                alert("Check-in successful!");
+                            } else {
+                                alert( result.message);
+                            }
+                        } catch (error) {
+                            console.error("Error during check-in:", error);
+                            alert("Check-in failed. Please try again.");
+                        }
+                    },
+                    (errorMessage) => {
+                        console.warn(`QR Code scanning error: ${errorMessage}`);
+                    }
+                );
+            } catch (err) {
+                console.error("Error initializing QR Code scanner:", err);
+                document.getElementById("result").innerText = "Failed to initialize scanner.";
+            }
+        }
+
+        // Start the scanner when the page loads
+        startQrScanner();
+    </script>
+</body>
+</html>

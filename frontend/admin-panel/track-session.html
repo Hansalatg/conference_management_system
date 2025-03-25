@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="track-session.css">
+</head>
+<body>
+    <div id="adminPanel">
+        <h2>Admin Panel - Track and Session Management</h2>
+        <form id="addSessionForm">
+
+            <label for="trackId">Track ID:</label>
+            <input type="number" id="trackId" placeholder="Enter Track ID" required>
+            
+    
+            <label for="sessionTitle">Session Title:</label>
+            <input type="text" id="sessionTitle" placeholder="Enter Session Title" required>
+    
+            <label for="speaker">Speaker:</label>
+            <input type="text" id="speaker" placeholder="Enter Speaker Name" required>
+    
+            <label for="time">Time:</label>
+            <input type="datetime-local" id="time" required>
+    
+            <label for="venue">Venue:</label>
+            <input type="text" id="venue" placeholder="Enter Venue" required>
+    
+            <label for="capacity">Capacity:</label>
+            <input type="number" id="capacity" placeholder="Enter Capacity" required>
+
+            <label for="sessionLink">Session Link:</label>
+            <input type="url" id="sessionLink" placeholder="Enter Session Link" required>
+    
+            <button type="submit">Add Session</button>
+        </form>
+    
+        <div class="navLinks">
+            <button id="viewSessionsButton">View Session List</button>
+        </div>
+
+        <!-- Session Table (Initially Hidden) -->
+        <div id="sessionsList" style="display: none;">
+            <!-- Button to Refresh Sessions -->
+            
+            
+            <!-- Table to Display Sessions -->
+            <table id="sessionsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Speaker</th>
+                        <th>Time</th>
+                        <th>Venue</th>
+                        <th>Capacity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="sessionsTableBody">
+                    <!-- Sessions will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    <script>
+      // Get the current date and time
+    const now = new Date();
+// Format the current date and time for the 'min' attribute
+const minDateTime = now.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:mm
+
+// Calculate the max date and time (7 days from now)
+const maxDate = new Date();
+maxDate.setDate(now.getDate() + 7); // Add 7 days
+const maxDateTime = maxDate.toISOString().slice(0, 16); // Get YYYY-MM-DDTHH:mm
+
+// Set the 'min' and 'max' attributes of the datetime-local input
+const timeInput = document.getElementById('time');
+timeInput.min = minDateTime;
+timeInput.max = maxDateTime;
+    </script>
+    <script src="track-session.js"></script>
+</body>
+</html>

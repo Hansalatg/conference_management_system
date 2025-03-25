@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Registration</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+
+        .content-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;  /* Reduced padding */
+            border-radius: 10px;  /* Reduced border radius */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);  /* Smaller shadow */
+            width: 100%;
+            max-width: 400px;  /* Reduced max-width */
+            text-align: center;
+            color: #333;
+        }
+
+        header h1 {
+            font-size: 26px;  /* Reduced font size */
+            font-weight: 600;
+            color: #6A0DAD;
+            margin-bottom: 5px;  /* Reduced margin */
+        }
+
+        .form-container {
+            margin-top: 15px;  /* Reduced margin */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;  /* Reduced padding */
+            margin-bottom: 10px;  /* Reduced margin */
+            border: 1px solid #ddd;
+            border-radius: 20px;  /* Reduced border radius */
+            font-size: 14px;  /* Smaller font size */
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #6A0DAD;
+            box-shadow: 0 0 8px rgba(106, 13, 173, 0.3);  /* Smaller focus effect */
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 12px;  /* Reduced padding */
+            background-color: #6A0DAD;
+            color: #ffffff;
+            font-size: 14px;  /* Smaller font size */
+            font-weight: 500;
+            border: none;
+            border-radius: 20px;  /* Reduced border radius */
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);  /* Smaller shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .btn-custom:hover {
+            background-color: #9B30FF;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(106, 13, 173, 0.5);  /* Slightly larger hover effect */
+        }
+
+        #responseMessage {
+            margin-top: 10px;  /* Reduced margin */
+            font-size: 12px;  /* Smaller font size */
+            color: red;
+        }
+
+        .login-link {
+            margin-top: 10px;  /* Reduced margin */
+            font-size: 12px;  /* Smaller font size */
+            color: #6A0DAD;
+            display: inline-block;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .login-link:hover {
+            color: #9B30FF;
+            text-decoration: underline;
+        }
+
+        #loginButton {
+            font-size: 14px;  /* Smaller font size */
+            background-color: transparent;
+            border: none;
+            color: #6A0DAD;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        @media (max-width: 576px) {
+            header h1 {
+                font-size: 20px;  /* Smaller header font size for small screens */
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            .btn-custom {
+                font-size: 12px;  /* Smaller font size */
+                padding: 10px;  /* Reduced padding */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content-container"> <!-- Main container for both header and form -->
+        <header>
+            <h1>Register for the Conference</h1>
+        </header>
+        <main>
+            <div class="form-container">
+                <form id="registrationForm">
+                    <input type="text" id="participantId" placeholder="Participant ID" required>
+                    <input type="text" id="name" placeholder="Your Name" required>
+                    <input type="email" id="email" placeholder="Your Email" required>
+                    <input type="text" id="organization" placeholder="Organization" required>
+                    <input type="password" id="password" placeholder="Your Password">
+                    <button type="button" id="registerButton" class="btn-custom">
+                        <i class="fa-solid fa-user-plus"></i> Register
+                    </button>
+                </form>
+                <p id="responseMessage"></p>
+                <div id="resultContainer"></div>
+
+                <button type="button" id="loginButton">Already have an account? Login</button>
+            </div>
+        </main>
+    </div>
+    <script src="scripts/register.js"></script>
+
+    <script>
+        // Handle login button click
+        document.getElementById('loginButton').addEventListener('click', function() {
+            // Redirect to the login page
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

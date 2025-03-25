@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Sessions</title>
+    <style>
+       body {
+    font-family: 'Poppins', sans-serif;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/bg4.jpg');
+    background-size: cover;
+    color: white;
+    background-position: center;
+    height: 100vh; 
+    margin: 0;
+    padding: 0; /* White text color */
+}
+        header {
+            background-color: #6a0dad;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+        .session-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .session-item {
+            background-color: #ffffff;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .session-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .session-item p {
+            font-size: 16px;
+            margin: 0;
+            color: #333;
+        }
+        .checkin-btn {
+            background-color: #6a0dad;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .checkin-btn:hover {
+            background-color: #5a0b99;
+        }
+        .checkin-btn:focus {
+            outline: none;
+        }
+        footer {
+            background-color: #6a0dad;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Available Sessions</h1>
+    </header>
+
+    <ul id="sessionList" class="session-list">
+        <!-- Sessions will be displayed here -->
+    </ul>
+
+    <footer>
+        <p>&copy; 2024 Your Company Name</p>
+    </footer>
+
+    <script>
+        // DOM element
+        const sessionList = document.getElementById("sessionList");
+
+        // Load and display sessions from the server
+        function loadSessions() {
+            fetch('http://localhost:3000/sessions') // Adjust URL for backend
+                .then(response => response.json())
+                .then(data => {
+                    const sessions = data.sessions;
+                    sessionList.innerHTML = ''; // Clear existing sessions
+                    sessions.forEach(session => {
+                        const listItem = document.createElement("li");
+                        listItem.classList.add("session-item");
+
+                        const sessionText = document.createElement("p");
+                        sessionText.textContent = `Session ID: ${session.sessionId}`;
+
+                        const checkinButton = document.createElement("button");
+                        checkinButton.classList.add("checkin-btn");
+                        checkinButton.textContent = "Check-In";
+                        checkinButton.onclick = function() {
+                            window.location.href = `checkin.html?sessionId=${session.sessionId}`;
+                        };
+
+                        listItem.appendChild(sessionText);
+                        listItem.appendChild(checkinButton);
+                        sessionList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading sessions:', error);
+                });
+        }
+
+        // Load sessions initially
+        loadSessions();
+    </script>
+</body>
+</html>

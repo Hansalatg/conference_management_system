@@ -1,0 +1,132 @@
+/* Universal Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/bg4.jpg');
+    background-size: cover;
+    color: white;
+    background-position: center;
+    height: 100vh; 
+    margin: 0;
+    padding: 0; /* White text color */
+}
+
+/* Dashboard Styling */
+.dashboard {
+    max-width: 1000px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 36px;
+    color: #6a1b9a; /* Purple color for title */
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 28px;
+    color: #6a1b9a; /* Purple color for section titles */
+    margin-top: 40px;
+    text-align: center;
+}
+
+p {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#participantName {
+    color: #ff4081;
+}
+
+/* Button Container */
+.button-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Button Styling */
+.session-button {
+    background-color: #6a1b9a; /* Purple background */
+    color: white;
+    padding: 12px 30px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.session-button:hover {
+    background-color: #ff4081; /* Pink color on hover */
+    transform: scale(1.1);
+}
+
+/* Table Styling */
+.sessions-table-container {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sessions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    color: #333;
+}
+
+.sessions-table th, .sessions-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.sessions-table th {
+    background-color: #6a1b9a; /* Purple headers */
+    color: white;
+    font-size: 20px;
+}
+
+.sessions-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.sessions-table tr:hover {
+    background-color: #f0f0f0; /* Light hover effect */
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 28px;
+    }
+
+    h3 {
+        font-size: 24px;
+    }
+
+    .session-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+}

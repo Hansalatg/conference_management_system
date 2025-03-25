@@ -1,0 +1,190 @@
+
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('./assets/bg1.jpeg ');
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+
+        #adminPanel {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #6a1b9a;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #4a148c;
+        }
+
+        input, button {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100%;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #8e24aa;
+            outline: none;
+            box-shadow: 0 0 5px rgba(142, 36, 170, 0.5);
+        }
+
+        button {
+            background-color: #7b1fa2;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #6a1b9a;
+        }
+
+        .navLinks {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #viewSessionsButton {
+            background-color: #6a1b9a;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        #viewSessionsButton:hover {
+            background-color: #4a148c;
+        }
+
+        /* Session Table */
+        #sessionsList {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #7b1fa2;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        td {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f1f1f1;
+        }
+
+        tr:hover td {
+            background-color: #e0e0e0;
+        }
+
+        /* Action buttons */
+        .edit-btn, .delete-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #8e24aa;
+        }
+
+        .edit-btn:hover {
+            background-color: #6a1b9a;
+        }
+
+        .delete-btn {
+            background-color: #d32f2f;
+        }
+
+        .delete-btn:hover {
+            background-color: #b71c1c;
+        }
+    
+
+        
+
+
+button.editButton{
+    padding: 5px 10px;
+    margin: 5px;
+    background-color:green;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.deleteButton {
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: #ff0022;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.editButton:hover, button.deleteButton:hover {
+    background-color:  #004aad;
+}
+

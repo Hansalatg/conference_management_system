@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .content-container:hover {
+            transform: translateY(-5px);
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #6A0DAD;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #6A0DAD;
+            box-shadow: 0 0 10px rgba(106, 13, 173, 0.3);
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 14px;
+            background-color: #6A0DAD;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.4);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-custom:hover {
+            background-color: #9B30FF;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.5);
+        }
+
+        #loginMessage {
+            margin-top: 15px;
+            font-size: 14px;
+            color: red;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6A0DAD;
+            display: block;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .register-link:hover {
+            color: #9B30FF;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+            header h1 {
+                font-size: 24px;
+            }
+
+            input[type="email"],
+            input[type="password"],
+            .btn-custom {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <header>
+            <h1>Login to Your Account</h1>
+        </header>
+        <main>
+            <div class="form-container">
+                <form id="loginForm">
+                    <input type="email" id="email" placeholder="Your Email">
+                    <input type="password" id="password" placeholder="Your Password">
+                    <button type="button" id="loginButton" class="btn-custom">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+                    </button>
+                </form>
+                <p id="loginMessage"></p>
+                
+
+                <!-- Register Link -->
+                <a href="registration.html" class="register-link">Not registered? Create an account</a>
+            </div>
+            </div>
+        </main>
+    </div>
+    <script src="scripts/login.js"></script>
+</body>
+</html>

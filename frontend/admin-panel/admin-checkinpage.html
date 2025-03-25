@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add Sessions for check-in</title>
+    <style>
+       /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+            font-family: Arial, sans-serif;
+            background-image: url('./assets/bg1.jpeg ');
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #5b2c6f; /* Deep Purple */
+    margin-bottom: 20px;
+}
+
+h5 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #6c3483; /* Medium Purple */
+    margin-bottom: 10px;
+}
+
+/* Form Styling */
+#addSessionForm {
+    background-color: #f5e6f7; /* Light Purple Background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(91, 44, 111, 0.2);
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+    color: #5b2c6f;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #d7bde2;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #f4ecf7; /* Very Light Purple */
+    color: #5b2c6f;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6c3483; /* Medium Purple */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5b2c6f; /* Deep Purple */
+}
+
+/* Table Styling */
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #d7bde2; /* Light Purple Border */
+    font-size: 1rem;
+}
+
+th {
+    background-color: #6c3483; /* Medium Purple */
+    color: white;
+}
+
+td button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Delete Button */
+.delete-btn {
+    background-color: #8e44ad; /* Darker Purple */
+    color: white;
+    border: none;
+}
+
+.delete-btn:hover {
+    background-color: #5b2c6f; /* Deep Purple */
+}
+
+    </style>
+</head>
+<body>
+    <h2>Admin Panel - Add Sessions for check-in</h2>
+
+    <form id="addSessionForm">
+        <label for="sessionId">Session ID:</label>
+        <input type="text" id="sessionId" name="sessionId" required>
+        <br><br>
+        <label for="sessionName">Session Name:</label>
+        <input type="text" id="sessionName" name="sessionName" required>
+        <br><br>
+        <button type="submit">Add Session</button>
+    </form>
+
+    <h5>Available Sessions for check-in</h5>
+    <table id="sessionTable">
+        <thead>
+            <tr>
+                <th>Session ID</th>
+                <th>Session Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Sessions will be displayed here -->
+        </tbody>
+    </table>
+
+    <script>
+        // DOM elements
+        const sessionTableBody = document.getElementById("sessionTable").getElementsByTagName("tbody")[0];
+        const addSessionForm = document.getElementById("addSessionForm");
+
+        // Add session button functionality
+        addSessionForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const sessionId = document.getElementById("sessionId").value.trim();
+            const sessionName = document.getElementById("sessionName").value.trim();
+            if (sessionId && sessionName) {
+                // Send request to add session to the server
+                fetch('http://localhost:3000/add-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ sessionId, sessionName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    loadSessions(); // Reload sessions after adding
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+
+        // Delete session
+        function deleteSession(sessionId) {
+            fetch(`http://localhost:3000/delete-session/${sessionId}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                loadSessions(); // Reload sessions after deleting
+            })
+            .catch(error => {
+                console.error('Error deleting session:', error);
+            });
+        }
+
+        // Load and display sessions from the server
+        function loadSessions() {
+            fetch('http://localhost:3000/sessions')
+                .then(response => response.json())
+                .then(data => {
+                    const sessions = data.sessions;
+                    sessionTableBody.innerHTML = ''; // Clear existing sessions
+                    sessions.forEach(session => {
+                        const row = document.createElement("tr");
+
+                        // Display session ID and session name
+                        const sessionIdCell = document.createElement("td");
+                        sessionIdCell.textContent = session.sessionId;
+
+                        const sessionNameCell = document.createElement("td");
+                        sessionNameCell.textContent = session.sessionName;
+
+                        const actionsCell = document.createElement("td");
+
+                        const deleteButton = document.createElement("button");
+                        deleteButton.classList.add("delete-btn");
+                        deleteButton.textContent = "Delete";
+                        deleteButton.onclick = function() {
+                            if (confirm(`Are you sure you want to delete the session ${session.sessionName}?`)) {
+                                deleteSession(session.sessionId);
+                            }
+                        };
+
+                        actionsCell.appendChild(deleteButton);
+
+                        row.appendChild(sessionIdCell);
+                        row.appendChild(sessionNameCell);
+                        row.appendChild(actionsCell);
+
+                        sessionTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading sessions:', error);
+                });
+        }
+
+        // Load sessions initially
+        loadSessions();
+    </script>
+</body>
+</html>

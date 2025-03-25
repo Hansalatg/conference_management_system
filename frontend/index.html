@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Conference Day Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                              url('participants-panel/assets/bg4.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+        }
+
+        .welcome-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            color: #333333;
+            transition: transform 0.3s ease;
+        }
+
+        .welcome-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #6A0DAD;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-custom {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            background-color: #6A0DAD;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.4);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-custom:hover {
+            background-color: #9B30FF;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.5);
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            .btn-custom {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-container">
+        <h1>Welcome to Conference Day Management System</h1>
+        <p>Join us for an incredible experience at the International Research Conference. Please click the button below to log in or register as a participant:</p>
+        <button class="btn btn-custom" onclick="window.location.href='participants-panel/registration.html'">
+            Participant Login or Register
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

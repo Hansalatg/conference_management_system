@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sessions</title>
+    <link rel="stylesheet" href="sessions.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"> <!-- Google font -->
+</head>
+<body>
+    <div id="participantDashboard" class="dashboard">
+        <h2>Participant Dashboard</h2>
+        <p>Welcome, <span id="participantName"></span>!</p>
+        
+        <!-- Buttons to toggle sessions display -->
+        <div class="button-container">
+            <button id="availableSessionsButton" class="session-button">Available Sessions</button>
+            <button id="registeredSessionsButton" class="session-button">Your Registered Sessions</button>
+        </div>
+
+        <!-- Available Sessions Table -->
+        <h3>Available Sessions</h3>
+        <div id="availableSessionsContainer" class="sessions-table-container">
+            <table id="availableSessionsTable" class="sessions-table">
+                <thead>
+                    <tr>
+                        <th>Session</th>
+                        <th>Speaker</th>
+                        <th>Time</th>
+                        <th>Venue</th>
+                        <th>Capacity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Available session data will go here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Registered Sessions Table -->
+        <h3>Your Registered Sessions</h3>
+        <div id="registeredSessionsContainer" class="sessions-table-container">
+            <table id="registeredSessionsTable" class="sessions-table">
+                <thead>
+                    <tr>
+                        <th>Session</th>
+                        <th>Speaker</th>
+                        <th>Time</th>
+                        <th>Venue</th>
+                        <th>Meeting Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Registered session data will go here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="sessions.js"></script>
+</body>
+</html>

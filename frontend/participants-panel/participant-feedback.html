@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback System</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/bg4.jpg');
+            background-size: cover;
+            color: black; /* Set the text color to black */
+            background-position: center;
+            height: 100vh; 
+            margin: 0;
+            padding: 0;
+        }
+
+        .feedback-container {
+            width: 60%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            color: black; /* Set text color inside feedback container to black */
+        }
+
+        h2 {
+            text-align: center;
+            color: #9c4dcc; /* Purple color for heading */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            color: black; /* Set text color inside form to black */
+        }
+
+        label {
+            font-size: 16px;
+            color: black; /* Set label text color to black */
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: black; /* Set input text color to black */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #9c4dcc; /* Purple background for buttons */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #6a1b9a; /* Darker purple on hover */
+        }
+
+        .delete-btn {
+            background-color: #f44336; /* Red background for delete button */
+        }
+
+        .delete-btn:hover {
+            background-color: #e53935;
+        }
+
+        .alert {
+            color: #f44336; /* Red alert text color */
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Participant Feedback Form -->
+<div class="feedback-container" id="feedback-form">
+    <h2>Submit Your Feedback</h2>
+    <form id="feedbackForm">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+
+        <label for="feedback">Your Feedback:</label>
+        <textarea id="feedback" name="feedback" required></textarea>
+
+        <button type="submit">Submit Feedback</button>
+        <button type="button" id="deleteBtn" class="delete-btn" style="display: none;">Delete Feedback</button>
+    </form>
+</div>
+
+<script>
+    let currentFeedbackId = null;  // To store the feedback ID if editing
+
+    // Fetch existing feedback if available (assuming the feedback is saved in the database with the user's email)
+    document.addEventListener('DOMContentLoaded', () => {
+        const email = localStorage.getItem('userEmail'); // Assuming email is stored in localStorage
+        if (email) {
+            fetch(`http://localhost:3000/get-feedback?email=${email}`)
+                .then(response => response.json())
+                .then(feedback => {
+                    if (feedback) {
+                        // Populate the form with existing feedback
+                        document.getElementById('name').value = feedback.name;
+                        document.getElementById('email').value = feedback.email;
+                        document.getElementById('rating').value = feedback.rating;
+                        document.getElementById('feedback').value = feedback.feedback;
+                        currentFeedbackId = feedback.id;
+                        document.getElementById('deleteBtn').style.display = 'inline-block'; // Show delete button
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching feedback:', error);
+                });
+        }
+    });
+
+    // Participant Feedback Submission or Edit
+    document.getElementById('feedbackForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {
+            id: currentFeedbackId, // If editing, include the existing feedback ID
+            name: formData.get('name'),
+            email: formData.get('email'),
+            rating: formData.get('rating'),
+            feedback: formData.get('feedback')
+        };
+
+        const method = currentFeedbackId ? 'PUT' : 'POST'; // Use PUT if editing an existing feedback
+        const url = currentFeedbackId ? `http://localhost:3000/update-feedback/${currentFeedbackId}` : 'http://localhost:3000/submit-feedback';
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(result => {
+            alert(result.message);
+            this.reset();
+            currentFeedbackId = null;
+            document.getElementById('deleteBtn').style.display = 'none'; // Hide delete button
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Delete Feedback
+    document.getElementById('deleteBtn').addEventListener('click', function () {
+        if (confirm('Are you sure you want to delete your feedback?')) {
+            fetch(`http://localhost:3000/delete-feedback/${currentFeedbackId}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+                document.getElementById('feedbackForm').reset();
+                currentFeedbackId = null;
+                document.getElementById('deleteBtn').style.display = 'none'; // Hide delete button
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+
+</body>
+</html>

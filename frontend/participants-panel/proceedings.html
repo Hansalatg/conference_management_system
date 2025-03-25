@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participants Dashboard</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./assets/bg4.jpg');
+            background-size: cover;
+            color: white;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        #participants-dashboard {
+            max-width: 1000px;
+            width: 100%;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 15px;
+           
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        #participants-dashboard::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6a1b9a, #9c4dcc);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        section {
+            margin-top: 20px;
+        }
+
+        #proceedings-section {
+       
+            border-radius: 15px;
+            padding: 30px;
+           
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #proceedings-section h3 {
+            font-size: 26px;
+            color: #9c4dcc;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        #participants-proceedings-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .proceeding {
+            background-color: #444;
+            border: 1px solid #555;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .proceeding:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .proceeding h4 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #9c4dcc;
+        }
+
+        .proceeding p {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .proceeding a {
+            display: inline-block;
+            font-size: 16px;
+            color: #fff;
+            background-color: #9c4dcc;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s, transform 0.3s;
+            text-align: center;
+        }
+
+        .proceeding a:hover {
+            background-color: #6a1b9a;
+            transform: translateY(-3px);
+        }
+
+        .alert {
+            color: #f44336;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 18px;
+            color: #9c4dcc;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            #participants-dashboard {
+                padding: 20px;
+            }
+
+            #participants-proceedings-list {
+                grid-template-columns: 1fr;
+            }
+
+            .proceeding {
+                padding: 20px;
+            }
+
+            #proceedings-section h3 {
+                font-size: 22px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="participants-dashboard">
+            <section id="proceedings-section">
+                <h3>My Proceedings</h3>
+                <div id="participants-proceedings-list">
+                    <!-- Proceedings will be dynamically added here -->
+                    <div class="loading">Loading proceedings...</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            const participantId = localStorage.getItem('participantId');
+            console.log('Participant ID retrieved:', participantId); // Check if the ID is retrieved correctly
+
+            const participantsProceedingsList = document.getElementById('participants-proceedings-list');
+
+            if (!participantId) {
+                alert("Participant ID is missing! Please log in first.");
+                participantsProceedingsList.innerHTML = "<p class='alert'>Participant ID is required to view proceedings.</p>";
+                return;
+            }
+
+            // Fetch proceedings for the participant
+            async function fetchProceedingsForParticipants() {
+                try {
+                    const response = await fetch(`http://localhost:3000/proceedings/participants?participantId=${participantId}`);
+
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            participantsProceedingsList.innerHTML = "<p class='alert'>No proceedings available for registered sessions.</p>";
+                            return;
+                        }
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Check if data is empty
+                    if (!Array.isArray(data) || data.length === 0) {
+                        participantsProceedingsList.innerHTML = "<p class='alert'>No proceedings available for registered sessions.</p>";
+                        return;
+                    }
+
+                    // Display proceedings
+                    participantsProceedingsList.innerHTML = ""; // Clear previous content
+                    data.forEach((item) => {
+                        participantsProceedingsList.innerHTML += `
+                            <div class="proceeding">
+                                <h4>${item.title}</h4>
+                                <p>${item.description}</p>
+                                <a href="http://localhost:3000${item.file_path}" target="_blank" download>Download</a>
+                            </div>
+                        `;
+                    });
+                } catch (error) {
+                    console.error("Error fetching proceedings:", error.message);
+                    participantsProceedingsList.innerHTML = "<p class='alert'>Error loading proceedings. Please try again later.</p>";
+                }
+            }
+
+            // Fetch proceedings when the page loads
+            fetchProceedingsForParticipants();
+        };
+    </script>
+</body>
+
+</html>
