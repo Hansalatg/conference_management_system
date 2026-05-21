@@ -46,20 +46,6 @@ npm start
 6. Open the application in the browser:
 http://localhost:3000
 
-## Project Structure
-
-conference-management-system/
-│
-├── public/
-│   ├── css/
-│   ├── js/
-│   ├── uploads/
-│   └── index.html
-│
-├── server.js
-├── package.json
-└── database.sql
-
 
 ## Future Improvements
 
